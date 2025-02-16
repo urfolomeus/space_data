@@ -1,0 +1,5 @@
+ipykernel==6.29.5
+matplotlib==3.10.0
+rasterio==1.4.3
+scikit-image==0.25.1
+scikit-learn==1.6.1
