@@ -32,33 +32,30 @@
  *      .mosaic();
  */
 
-// Define the new Area of Interest (AOI) for Aleppo
+// Define the new Area of Interest (AOI) for Kharkiv
 var aoi = ee.Geometry.Polygon([
-  [
-      [32.49934598377152, 15.510298479854654],
-      [32.50398716711848, 15.483361349961328],
-      [32.550733835538836, 15.490515774446791],
-      [32.55239943011833, 15.518720602273746],
-      [32.49934598377152, 15.510298479854654],
-  ],
+  [36.73109683531627, 37.17387384193251],
+  [36.752511592091174, 37.17387384193251],
+  [36.752511592091174, 37.18573863880196],
+  [36.73109683531627, 37.18573863880196],
+  [36.73109683531627, 37.17387384193251],
 ]);
 
 /**
  * Image Collection Filtering.
  *
- * This code filters Sentinel-2 images to select those taken before the siege began in July 2012 and after two major
- * events that led to significant damage in September 2012 (the fire in Al-Madina Souk) and April 2013 (destruction of the old city).
- * This lets us compare the "pre-event" and "post-event" imagery.
+ * This code filters Sentinel-2 images to select those taken before the attacks began in Feb 2024 and afterwards
+ * in Feb 2025. This lets us compare the "pre-event" and "post-event" imagery.
 */
 var preEventCollection = ee
   .ImageCollection("COPERNICUS/S2_SR")
-  .filterDate("2012-06-01", "2012-06-30")
+  .filterDate("2022-04-01", "2022-04-30")
   .filterBounds(aoi)
   .mosaic();
 
   var postEventCollection = ee
   .ImageCollection("COPERNICUS/S2_SR")
-  .filterDate("2013-06-01", "2013-06-30")
+  .filterDate("2023-04-01", "2023-04-30")
   .filterBounds(aoi)
   .mosaic();
 
@@ -164,7 +161,7 @@ function generateParamsWithMax (max) {
 
 
 // Center the map and visualize the mosaicked images, combined homogeneity, and dissimilarity differences
-Map.centerObject(aoi, 15);
+Map.centerObject(aoi, 16);
 
 Map.addLayer(
   preEventCollection.clip(aoi),
@@ -200,20 +197,20 @@ Map.addLayer(
  * also print on the console the number of building footprints in the AOI.
  **/
 
-// Load the Google Open Buildings dataset
-var openBuildings = ee
-  .FeatureCollection("GOOGLE/Research/open-buildings/v3/polygons")
-  .filterBounds(aoi);
+// // Load the Google Open Buildings dataset
+// var openBuildings = ee
+//   .FeatureCollection("GOOGLE/Research/open-buildings/v3/polygons")
+//   .filterBounds(aoi);
 
 
-// Add the building footprints layer to the map
-Map.addLayer(
-  openBuildings,
-  {},
-  "Google Open Buildings Footprints"
-);
+// // Add the building footprints layer to the map
+// Map.addLayer(
+//   openBuildings,
+//   {},
+//   "Google Open Buildings Footprints"
+// );
 
 
-// Print the number of building footprints within the AOI
-var buildingCount = openBuildings.size();
-print("Number of building footprints in the AOI:", buildingCount);
+// // Print the number of building footprints within the AOI
+// var buildingCount = openBuildings.size();
+// print("Number of building footprints in the AOI:", buildingCount);
